@@ -1,0 +1,1 @@
+{"model": "qwen2.5-coder:3b", "task_id": "HumanEval/14", "response": "```python\nfrom typing import List\n\n\ndef all_prefixes(string: str) -> List[str]:\n    \"\"\" Return list of all prefixes from shortest to longest of the input string\n    >>> all_prefixes('abc')\n    ['a', 'ab', 'abc']\n    \"\"\"\n    return [string[:i+1] for i in range(len(string))]\n```", "seconds": 2.95}

@@ -1,0 +1,1 @@
+{"model": "qwen2.5-coder:3b", "task_id": "HumanEval/23", "response": "```python\nfrom typing import *\nfrom collections import *\n\ndef strlen(string: str) -> int:\n    \"\"\" Return length of given string\n    >>> strlen('')\n    0\n    >>> strlen('abc')\n    3\n    \"\"\"\n    return len(string)\n```", "seconds": 2.89}
