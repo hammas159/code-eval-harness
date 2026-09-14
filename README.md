@@ -96,6 +96,80 @@ generation from scoring.
 a throwaway temp directory, with a timeout — **but it is not a security sandbox.** Do not
 point it at untrusted generations on a machine you care about.
 
+---
+
+## How it works
+
+```mermaid
+flowchart TD
+    A["HumanEval<br/>0.1 MB, local HF cache"] --> B["src/core.py<br/>load_problems()"]
+    B --> C["generate() via ollama<br/>temperature 0, fixed seed"]
+    C --> D["cache on disk<br/>keyed by model + task"]
+    D --> E["five extraction strategies"]
+    E --> F1["raw"]
+    E --> F2["prompt+body"]
+    E --> F3["first_fence"]
+    E --> F4["all_fences"]
+    E --> F5["smart"]
+    F1 --> G["run_tests()<br/>subprocess + timeout"]
+    F2 --> G
+    F3 --> G
+    F4 --> G
+    F5 --> G
+    G --> H["results/scores.json"]
+    H --> I["ui/app.py"]
+    style D fill:#16a34a,color:#fff
+    style F1 fill:#dc2626,color:#fff
+    style F2 fill:#dc2626,color:#fff
+```
+
+**Generation and scoring are separate on purpose.** Adding a sixth strategy and
+re-scoring costs no model time at all.
+
+---
+
+## Problems hit while building this
+
+| Problem | What happened | Fix |
+|---|---|---|
+| **The harness scored working models at 0%** | The runner interpolated `repr(entry_point)`, so HumanEval's `check()` received the **string** `"add"` instead of the function. Every test failed with `'str' object is not callable` - *precisely the failure this repo exists to measure* | Interpolate the bare name; regression test named after the bug |
+| **Two results looked like two findings** | `raw` and `prompt+body` both scored 0%, implying independent failure modes | Checked the reasons: **100 of 100 `SyntaxError` for each, same cause**. The README says so rather than implying five independent results |
+| **Unicode crash on Windows** | Printing a non-ASCII character to a `cp1252` console killed an inspection script | Set `PYTHONIOENCODING=utf-8` and kept non-ASCII out of program output |
+| **`plotly` unavailable** | The charts were written for plotly, which was not installed, and the connection was too slow to fetch it | Rewrote them in **Altair**, which ships with Streamlit - zero download |
+| **Buffered logs hid progress** | Redirected stdout showed nothing for minutes at a time | Tracked progress by counting cached generation files instead |
+
+---
+
+## Future work
+
+1. **Run the full 164 problems.** The current 50 are the easier half, so the absolute
+   numbers are not comparable to published pass@1 - the README says so explicitly.
+2. **Add `qwen2.5-coder:14b`.** The comparison code is written and generations are
+   cached, so it is one command once the model finishes downloading.
+3. **pass@k with sampling** at temperature above 0, which is what published numbers
+   usually report.
+4. **Add MBPP** (already downloaded) to check whether the spread is HumanEval-specific.
+5. **A real sandbox.** Execution is a subprocess with a timeout - a guard, not a security
+   boundary. Containerisation or `seccomp` would make it safe for untrusted generations.
+6. **Treat the prompt as a variable too.** Prompt phrasing is a second unreported free
+   parameter, and the same generate-once/score-many design would measure it.
+7. **Publish a recommended extraction standard** so reported pass@1 numbers become
+   comparable between papers.
+
+---
+
+## Stack
+
+`Python 3.11+` · `Ollama` (local inference) · `pandas` · `pyarrow` · `Streamlit` ·
+`Altair` · `pytest` · `ruff` · `GitHub Actions` · HumanEval via `Hugging Face Hub`
+
+## Keywords
+
+HumanEval · pass@k · pass@1 · code generation benchmark · LLM evaluation · evaluation
+harness · answer extraction · benchmark reproducibility · local LLM · Ollama · Qwen2.5 ·
+code LLM · prompt sensitivity · harness bias · LLM benchmarking methodology ·
+deterministic evaluation
+
 ## Layout
 
 ```
