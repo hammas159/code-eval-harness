@@ -98,9 +98,10 @@ streamlit run ui/app.py       # inspect every disagreement case by case
 pytest -q                     # 19 tests, no network, no model calls
 ```
 
-<!-- screenshot placeholder
 ![dashboard](docs/images/dashboard.png)
--->
+
+*The same cached generations scored five ways: 0.0% to 94.0% for an unchanged model,
+and the 94 of 100 (model, problem) pairs where the strategies disagree.*
 
 ### &#9888; Safety
 
