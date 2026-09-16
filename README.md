@@ -94,14 +94,22 @@ costs **no model time at all**.
 
 ```bash
 python src/run_eval.py 50     # generate (cached) and score
-streamlit run ui/app.py       # inspect every disagreement case by case
 pytest -q                     # 19 tests, no network, no model calls
 ```
 
-![dashboard](docs/images/dashboard.png)
+---
 
-*The same cached generations scored five ways: 0.0% to 94.0% for an unchanged model,
-and the 94 of 100 (model, problem) pairs where the strategies disagree.*
+## Input
+
+![input](docs/images/input.png)
+
+## Output
+
+![output](docs/images/output.png)
+
+*Nothing about the model changed between the first row and the third. The generations are
+cached on disk and every strategy reads the same files. A HumanEval number published without
+its extraction strategy is not a measurement of the model.*
 
 ### &#9888; Safety
 
@@ -140,7 +148,6 @@ That is precisely the failure this repo exists to measure, and it happened here 
 ```
 src/core.py       data loading, generation + cache, five strategies, execution
 src/run_eval.py   generate once, score every way, write results/scores.json
-ui/app.py         Streamlit - the matrix, and every disagreement
 tests/            19 tests using hand-written "model output" - no ollama needed
 docs/             detailed documentation
 ```
@@ -148,7 +155,7 @@ docs/             detailed documentation
 ## Stack
 
 `Python 3.11+` &middot; `Ollama` (local inference) &middot; `pandas` &middot; `pyarrow`
-&middot; `Streamlit` &middot; `Altair` &middot; `pytest` &middot; `ruff` &middot;
+&middot; `pytest` &middot; `ruff` &middot;
 `GitHub Actions` &middot; HumanEval via `Hugging Face Hub`
 
 ## Keywords
