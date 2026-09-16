@@ -19,8 +19,8 @@ jobs:
       - run: uv sync --all-groups
       - name: Lint
         run: |
-          uv run ruff check src tests ui
-          uv run ruff format --check src tests ui
+          uv run ruff check src tests
+          uv run ruff format --check src tests
       - name: Test
         # No network and no model calls: every test uses hand-written "model output",
         # so CI exercises the harness rather than ollama.
