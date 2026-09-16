@@ -15,10 +15,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from core import STRATEGIES, generate, load_problems, run_tests
 
 RESULTS = Path(__file__).resolve().parent.parent / "results"
-MODELS = ["qwen2.5-coder:3b", "qwen2.5:7b-instruct"]
+MODELS = ["qwen2.5-coder:3b", "qwen2.5:7b-instruct", "qwen2.5-coder:14b"]
 
 
-def main(limit: int = 40, models: list[str] | None = None) -> None:
+def main(limit: int = 50, models: list[str] | None = None) -> None:
     models = models or MODELS
     problems = load_problems(limit)
     RESULTS.mkdir(exist_ok=True)

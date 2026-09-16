@@ -1,0 +1,1 @@
+{"model": "qwen2.5-coder:14b", "task_id": "HumanEval/27", "response": "```python\ndef flip_case(string: str) -> str:\n    \"\"\" For a given string, flip lowercase characters to uppercase and uppercase to lowercase.\n    >>> flip_case('Hello')\n    'hELLO'\n    \"\"\"\n    return ''.join(char.lower() if char.isupper() else char.upper() for char in string)\n```", "seconds": 4.86}

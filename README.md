@@ -60,11 +60,13 @@ reports chat models as incapable.**
 
 ---
 
-## The 3B and the 7B are indistinguishable here
+## The 3B, the 7B and the 14B are indistinguishable here
 
-Under `smart`, the two models disagree on **2 of 50 problems** and score identically.
+Under `smart`, all three score **94.0%**. They disagree on **4 of 50 problems**
+(`HumanEval/10`, `/19`, `/26`, `/38`), so the identical score is not the same behaviour —
+it is three different behaviours averaging to the same number.
 
-Worth knowing before paying for a bigger model on this class of task: **2.3x the parameters
+Worth knowing before paying for a bigger model on this class of task: **4.8x the parameters
 bought nothing measurable.**
 
 ---
@@ -110,6 +112,10 @@ pytest -q                     # 19 tests, no network, no model calls
 *Nothing about the model changed between the first row and the third. The generations are
 cached on disk and every strategy reads the same files. A HumanEval number published without
 its extraction strategy is not a measurement of the model.*
+
+*The third column is the stronger half. `qwen2.5-coder:14b` has **4.8x the parameters** of
+the 3B and scores **identically** under all five strategies — while failing a different set
+of problems. Extraction moves the score 94 points; model size moves it zero.*
 
 ### &#9888; Safety
 
