@@ -1,4 +1,4 @@
-<h1 align="center">code-eval-harness</h1>
+<h1 align="center">code-eval-harness (Python · pandas · PyArrow · Hugging Face Hub)</h1>
 <p align="center"><i>The same answers, five different scores</i></p>
 
 <p align="center">
